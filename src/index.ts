@@ -21,7 +21,7 @@ export const sign_up = (user: user_data) => {
 export const sign_out = () => {
   var authenticated_user = JSON.parse(window.localStorage.getItem('user')!);
   var kk = {
-    ...authenticated_user,
+    authenticated_user,
     logged_in: false,
   };
   window.localStorage.setItem('user', JSON.stringify(kk));
@@ -38,11 +38,9 @@ export const sign_in = (email: string, password: string) => {
     };
   } else {
     // here verify the credentials
-    if (signed_user.email === email &&
-      signed_user.password === password
-    ) {
+    if (signed_user.email === email && signed_user.password === password) {
       var pp = {
-        ...signed_user,
+        signed_user,
         logged_in: true,
       };
       window.localStorage.setItem('user', JSON.stringify(pp));
@@ -54,7 +52,7 @@ export const sign_in = (email: string, password: string) => {
       return {
         sign_in: false,
         message: 'credential error',
-      }
+      };
     }
   }
 };
@@ -83,7 +81,9 @@ export const modify = (newData: user_data) => {
     password: newData.password ? newData.password : current_user.password,
     created_at: current_user.created_at,
     logged_in: true,
-    image_profile: newData.image_profile ? newData.image_profile : current_user.image_profile
+    image_profile: newData.image_profile
+      ? newData.image_profile
+      : current_user.image_profile,
   };
   window.localStorage.setItem('user', JSON.stringify(modified_user));
 };
